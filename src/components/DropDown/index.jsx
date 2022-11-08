@@ -9,7 +9,14 @@ import {
 
 const DropDown = ({ type, handleChange, types }) => {
   return (
-    <Box mt={5}>
+    <Box
+      mt={5}
+      sx={{
+        borderRadius: "2%",
+        bgcolor: `yellow`,
+        padding: "6%",
+      }}
+    >
       <Typography variant="h4" mb={3}>
         Tipo de pokemones
       </Typography>
