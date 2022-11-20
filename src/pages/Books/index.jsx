@@ -1,37 +1,30 @@
-import {
-  CardContent,
-  Box,
-  Container,
-  TextField,
-  Button,
-  Card,
-} from "@mui/material";
 import { useState } from "react";
-import CardBooks from "../../components/CardBooks";
+import {
+  Card,
+  CardContent,
+  Container,
+  Box,
+  Button,
+  TextField,
+  Grid,
+} from "@mui/material";
 import { get } from "../../services/books";
-
-Box;
+import { CardBook } from "../../components";
 
 const Books = () => {
-  const [book, setBook] = useState("");
+  const [search, setSearch] = useState("");
+
   const [books, setBooks] = useState([]);
-  const getBooks = async () => {
-    try {
-      const libros = await get(book);
-      setBooks(libros.items);
-      console.log(libros);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  };
-  const handleChange = (event) => {
-    setBook(event.target.value);
+
+  const handleSearch = async () => {
+    const books = await get(search);
+    setBooks(books.items);
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ backgroundColor: "black", padding: 2 }}>
       <Box my={4}>
-        <Card>
+        <Card sx={{ backgroundColor: "#3CFF33" }}>
           <CardContent>
             <Box
               sx={{
@@ -43,18 +36,15 @@ const Books = () => {
             >
               <TextField
                 id="outlined-basic"
-                label="Busca un libro"
+                label="Buscar un libro"
                 fullWidth
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 size="small"
                 variant="outlined"
-                onChange={handleChange}
               />
               <Box my={2}>
-                <Button
-                  size="large"
-                  variant="contained"
-                  onClick={() => getBooks()}
-                >
+                <Button onClick={handleSearch} size="large" variant="contained">
                   Buscar
                 </Button>
               </Box>
@@ -62,7 +52,19 @@ const Books = () => {
           </CardContent>
         </Card>
       </Box>
-      {books.length > 0 && books.map((book) => <CardBooks book={book} />)}
+      <Grid
+        container
+        spacing={2}
+        mt={3}
+        sx={{ backgroundColor: "#3CFF33", padding: 1 }}
+      >
+        {books.length > 0 &&
+          books.map((book, index) => (
+            <Grid item xs={12} sm={6}>
+              <CardBook key={index} book={book} />
+            </Grid>
+          ))}
+      </Grid>
     </Container>
   );
 };
